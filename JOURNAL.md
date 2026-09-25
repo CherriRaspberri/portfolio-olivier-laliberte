@@ -39,3 +39,13 @@ Est-ce que ça serait possible d'ajouter 3 nouvelles cartes en bas des anciennes
 
 ### PROCHAINE ÉTAPE :
 - Programmation du site (production).
+
+## PRODUCTION
+
+### VS CODE :
+- *25/09/2026* : Création de la page index.html. Utilisation d'IA pour le formattage de la page et la position. Création du Header avec l'IA + Hero.
+
+### GITHUB :
+
+### UTILISATION D'IA :
+- *25/09/2026* : "Je veux un header mince avec un border-bottom de 1px blanc. À l'intérieur, je veux 2 boites de texte : une à gauche et une à droite. Dans celle de gauche, 'PORTFOLIO - 2026' est écrit, et dans celle de droit, je veux 3 liens : 'work', 'about', 'contact'."
