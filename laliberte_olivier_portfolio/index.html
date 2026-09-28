@@ -1,41 +1,115 @@
+<!--Olivier Laliberté - 2026-->
+<!--This project has been created with help from Copilot's AI-->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio : Accueil</title>
+    <title>Olivier Laliberté - Portfolio</title>
 
-    <!--Local imports-->
+    <!-- Local imports -->
     <link rel="stylesheet" href="./src/styles.css">
     <script src="./src/script.js"></script>
 </head>
 
 <body>
+    <!-- 
+        Header : 
+        - Site title
+        - Navigation menu
+            - Links to work, about, contact sections
+    -->
     <header class="site-header">
-        <a class="site-title" href="#top">Portfolio - 2026</a>
+        <!-- Site title -->
+        <a class="site-title" href="#top"><span class="yellow-star">✦&nbsp;</span>Portfolio - 2026</a>
 
-        <nav class="site-nav" aria-label="Primary">
-            <a href="#work">work</a>
-            <a href="#about">about</a>
-            <a href="#contact">contact</a>
-        </nav>
+        <div class="site-header-details">
+            <span class="site-location">45.50°N 73.56°W</span>
+            <span class="site-header-divider" aria-hidden="true"></span>
+            <!-- Navigation menu -->
+            <nav class="site-nav" aria-label="Primary">
+                <p></p>
+                <a href="#work">work</a>
+                <a href="#about">about</a>
+                <a href="#contact">contact</a>
+            </nav>
+        </div>
     </header>
 
+    <!-- 
+        Main content :
+        - Hero section
+            - Textual introduction
+            - Hero image
+            - Nav buttons
+        - Infinite side-scrolling banner
+        - Projects section :
+            - Project list pulled from Airtable API
+        - About section
+        - Contact section
+    -->
     <main id="top">
+        <!-- Hero section -->
         <section class="hero" aria-label="Hero section">
             <div class="hero-copy" aria-label="Hero copy">
-                <div class="hero-copy-line hero-copy-line--eyebrow">DESIGN / DIRECTION ARTISTIQUE / PROGRAMMATION FRONT-END</div>
+                <div class="hero-copy-line hero-copy-line--eyebrow"><span class="yellow-star">✦&nbsp;</span>DESIGN /
+                    DIRECTION ARTISTIQUE / PROGRAMMATION FRONT-END</div>
                 <div class="hero-copy-line hero-copy-line--title">PORTFOLIO</div>
                 <div class="hero-copy-line hero-copy-line--name">OLIVER LALIBERTÉ</div>
+                <div class="hero-description-box">
+                    <div class="hero-description-divider" aria-hidden="true"></div>
+                    <p class="hero-description">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br>
+                        Curabitur eget mollis mi, sit amet aliquet arcu.<br>
+                        Donec at ex gravida, rhoncus est nec, dignissim lorem.
+                    </p>
+                </div>
+                <div class="hero-actions">
+                    <a class="hero-button hero-button--projects" href="#work"><span>Voir les projets</span></a>
+                    <a class="hero-button hero-button--contact" href="#contact"><span>CONTACT</span></a>
+                </div>
             </div>
             <div class="hero-image" aria-label="Hero image placeholder">
-                <img src="./assets/imgs/hero_image.png" alt="Hero-image"/>
+                <img src="./assets/imgs/hero_image.png" alt="Hero-image" />
             </div>
             <div class="hero-overlay" aria-label="Hero text overlay">
                 <div class="hero-overlay-item">placeholder</div>
                 <div class="hero-overlay-item">placeholder</div>
                 <div class="hero-overlay-item">placeholder</div>
+            </div>
+        </section>
+
+        <!-- Infinite side-scrolling banner -->
+        <section class="infinite-banner" aria-label="Infinite side-scrolling banner">
+            <div class="infinite-banner-track">
+                <div class="infinite-banner-group">
+                    <span>placeholder</span><span aria-hidden="true">✦</span>
+                    <span>placeholder</span><span aria-hidden="true">✦</span>
+                    <span>placeholder</span><span aria-hidden="true">✦</span>
+                    <span>placeholder</span><span aria-hidden="true">✦</span>
+                    <span>placeholder</span><span aria-hidden="true">✦</span>
+                    <span>placeholder</span><span aria-hidden="true">✦</span>
+                    <span>placeholder</span><span aria-hidden="true">✦</span>
+                    <span>placeholder</span><span aria-hidden="true">✦</span>
+                </div>
+                <div class="infinite-banner-group" aria-hidden="true">
+                    <span>placeholder</span><span>✦</span>
+                    <span>placeholder</span><span>✦</span>
+                    <span>placeholder</span><span>✦</span>
+                    <span>placeholder</span><span>✦</span>
+                    <span>placeholder</span><span>✦</span>
+                    <span>placeholder</span><span>✦</span>
+                    <span>placeholder</span><span>✦</span>
+                    <span>placeholder</span><span>✦</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects section -->
+        <section class="projects" aria-label="Projects section">
+            <div class="projects-list" aria-label="Projects list">
+                <!-- Project items will be dynamically inserted here -->
             </div>
         </section>
     </main>
