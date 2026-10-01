@@ -9,7 +9,7 @@
 	--secondary-text-color: #EBff00;
 	--third-text-color: #FF5555;
 	--fourth-text-color: #000000;
-	--fifth-text-color: #303030;
+	--fifth-text-color: #757575;
 
 	--separation-line-color: #303030;
 
@@ -355,7 +355,6 @@ main {
 	padding-top: 0.9rem;
 	border-top: 1px solid var(--primary-border-color);
 	border-radius: 0;
-	background: rgba(0, 0, 0, 0.2);
 	box-sizing: border-box;
 }
 
@@ -365,9 +364,7 @@ main {
 	letter-spacing: 0.12em;
 	text-transform: uppercase;
 	color: var(--primary-border-color);
-	background: rgba(255, 255, 255, 0.04);
 	padding: 0.4rem 0.65rem;
-	border: 1px solid rgba(245, 245, 245, 0.25);
 	border-radius: 0;
 }
 
@@ -389,13 +386,19 @@ main {
 
 .infinite-banner-track {
 	display: flex;
-	width: max-content;
-	animation: banner-scroll-right 24s linear infinite;
+	will-change: transform;
+	/* Make the track twice as wide as the container so the duplicated
+	   groups sit side-by-side (first half + duplicate in second half) */
+	width: 200%;
+	box-sizing: border-box;
 }
 
 .infinite-banner-group {
 	display: flex;
 	align-items: center;
+	/* Each group occupies half the track (50% of the viewport) */
+	flex: 0 0 50%;
+	box-sizing: border-box;
 	gap: 1.5rem;
 	padding: 0.55rem 1.5rem;
 	white-space: nowrap;
@@ -410,12 +413,12 @@ main {
 }
 
 @keyframes banner-scroll-right {
-	from {
-		transform: translateX(-50%);
-	}
-	to {
-		transform: translateX(0);
-	}
+	from { transform: translateX(0); }
+	to { transform: translateX(-50%); }
+}
+
+.infinite-banner-track {
+	animation: banner-scroll-right 24s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -437,6 +440,36 @@ main {
 	padding: max(10rem, 24vw) 1.5rem 5rem;
 	background: var(--primary-background-color);
 	border-bottom: 1px solid var(--primary-border-color);
+}
+
+/* Contact section background image centered behind text */
+.contact {
+	position: relative;
+	background-color: var(--primary-background-color);
+	color: var(--primary-text-color);
+	padding: 6rem 1.5rem;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+
+.contact::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	display: block;
+	background-image: url("../assets/imgs/contact_bg_img.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+	opacity: 0.8;
+	pointer-events: none;
+	z-index: 0;
+}
+
+.contact-main,
+.contact-credentials {
+	position: relative;
+	z-index: 1;
 }
 
 .projects::before {
