@@ -11,7 +11,9 @@
 
     <!-- Local imports -->
     <link rel="stylesheet" href="./src/styles.css">
-    <script src="./src/script.js"></script>
+    <script src="./src/script.js" defer></script>
+    
+    <link rel="icon" href="./assets/imgs/favicon.png" type="image/x-icon">
 </head>
 
 <body>
@@ -70,21 +72,23 @@
                         Le design, c'est pas un style, c'est un mode de vie.
                     </p>
                 </div>
+
                 <!-- Hero buttons -->
                 <div class="hero-actions">
                     <a class="hero-button hero-button--projects" href="#work"><span>Voir les projets</span></a>
                     <a class="hero-button hero-button--contact" href="#contact"><span>CONTACT</span></a>
                 </div>
             </div>
+
             <!-- Hero image -->
             <div class="hero-image" aria-label="Hero image placeholder">
                 <img src="./assets/imgs/hero_image.png" alt="Hero-image" />
             </div>
             <!-- Hero bottom overlay -->
             <div class="hero-overlay" aria-label="Hero text overlay">
-                <div class="hero-overlay-item">placeholder</div>
-                <div class="hero-overlay-item">placeholder</div>
-                <div class="hero-overlay-item">placeholder</div>
+                <div class="hero-overlay-item">MMXXVI</div>
+                <div class="hero-overlay-item">WORDLWIDE</div>
+                <div class="hero-overlay-item">ALL RIGHTS RESERVED</div>
             </div>
         </section>
 
@@ -127,10 +131,31 @@
                 <div class="projects-reference-mark" aria-hidden="true"></div>
                 <span class="projects-reference">AUDI SPORT QUATTRO S1 — GROUPE B ✦ IMG.REF XX0235</span>
             </div>
+
             <!-- Projects title -->
             <h2 class="projects-title">PROJECTS</h2>
+
             <div class="projects-list" aria-label="Projects list">
                 <!-- Project items will be dynamically inserted here -->
+            </div>
+
+            <!-- Project popup - Hidden by default -->
+            <div class="project-modal" id="project-modal" aria-hidden="true">
+                <div class="project-modal-backdrop" data-close="true" aria-hidden="true"></div>
+                <div class="project-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="project-modal-title">
+                    <button class="project-modal-close" type="button" aria-label="Close project details">×</button>
+                    <div class="project-modal-media">
+                        <img id="project-modal-image" src="" alt="Project preview" />
+                    </div>
+                    <div class="project-modal-body">
+                        <div id="project-modal-tags" class="project-modal-tags" aria-label="Project categories"></div>
+                        <h3 id="project-modal-title">Project title</h3>
+                        <p id="project-modal-description">Project description</p>
+                        <div class="project-modal-meta">
+                            <span id="project-modal-year">Year</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -141,28 +166,36 @@
                 <h2 class="about-title">STATS</h2>
                 <!-- Demo reel -->
                 <div class="about-reel" aria-label="Demo reel">
-                    <span class="about-reel-play" aria-hidden="true">▶</span>
-                    <span class="about-reel-label">DEMO REEL / 00:00</span>
+                    <!-- Unlisted Youtube video -->
+                    <iframe src="https://www.youtube.com/embed/aZuXVD_1DtM?rel=0&modestbranding=1"
+                        title="Demo reel video"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy">
+                    </iframe>
                 </div>
             </div>
             <!-- About details -->
             <div class="about-details">
                 <p class="about-description">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eget mollis mi, sit amet aliquet arcu. Donec at ex gravida, rhoncus est nec, dignissim lorem.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eget mollis mi, sit amet aliquet
+                    arcu. Donec at ex gravida, rhoncus est nec, dignissim lorem.
                 </p>
+                <!-- Stats table - Display of skills and expertise with dots as indicators -->
                 <table class="about-table">
                     <tbody>
                         <tr>
                             <td>
                                 <div class="about-cell-content">
                                     <span>WEB DESIGN</span>
-                                    <span class="about-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+                                    <span class="about-dots"
+                                        aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
                                 </div>
                             </td>
                             <td>
                                 <div class="about-cell-content">
                                     <span>VS CODE, FIGMA</span>
-                                    <span class="about-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+                                    <span class="about-dots"
+                                        aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
                                 </div>
                             </td>
                         </tr>
@@ -170,13 +203,15 @@
                             <td>
                                 <div class="about-cell-content">
                                     <span>MONTAGE VIDÉO</span>
-                                    <span class="about-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+                                    <span class="about-dots"
+                                        aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
                                 </div>
                             </td>
                             <td>
                                 <div class="about-cell-content">
                                     <span>DAVINCI RESOLVE</span>
-                                    <span class="about-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+                                    <span class="about-dots"
+                                        aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
                                 </div>
                             </td>
                         </tr>
@@ -184,13 +219,15 @@
                             <td>
                                 <div class="about-cell-content">
                                     <span>ANIMATION 3D</span>
-                                    <span class="about-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+                                    <span class="about-dots"
+                                        aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
                                 </div>
                             </td>
                             <td>
                                 <div class="about-cell-content">
                                     <span>MAYA, BLENDER</span>
-                                    <span class="about-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+                                    <span class="about-dots"
+                                        aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
                                 </div>
                             </td>
                         </tr>
@@ -198,18 +235,22 @@
                             <td>
                                 <div class="about-cell-content">
                                     <span>VISUAL DEVELOPMENT</span>
-                                    <span class="about-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+                                    <span class="about-dots"
+                                        aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
                                 </div>
                             </td>
                             <td>
                                 <div class="about-cell-content">
                                     <span>TOUCH DESIGNER</span>
-                                    <span class="about-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+                                    <span class="about-dots"
+                                        aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
                                 </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+
+                <!-- Tags for different fields of expertise -->
                 <div class="about-tags" aria-label="Fields of expertise">
                     <span class="about-tag">Web design</span>
                     <span class="about-tag">Brand Design</span>
@@ -229,6 +270,8 @@
                 <p class="contact-eyebrow"><span class="yellow-star">✦&nbsp;</span>CONTACT</p>
                 <h2 class="contact-title">DÉMARRONS UN PROJET</h2>
             </div>
+
+            <!-- External links -->
             <nav class="contact-credentials" aria-label="Contact credentials">
                 <a href="tel:+10000000000">PHONE NUMBER</a>
                 <a href="mailto:hello@example.com">EMAIL ADDRESS</a>

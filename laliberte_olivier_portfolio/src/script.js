@@ -16,81 +16,162 @@ async function loadProjects() {
   return await response.json();
 }
 
-//Initializes the page by loading projects and displaying them
-async function init() {
-  let projectsArray = [];
-  //Loads projects from AirTable API
-  const projects = await loadProjects();
-  //Adds each project to the projectsArray
-  projects.records.forEach((project) => {
-    projectsArray.push(project.fields);
-  });
-  //Sorts the projectsArray by ID in ascending order
-  projectsArray.sort((a, b) => a.id - b.id);
+//Waits for weebsite to load
+document.addEventListener("DOMContentLoaded", () => {
+  //Finder :
+  //Gets the modal and its elements from the DOM
+  const modal = document.getElementById("project-modal");
+  const modalImage = document.getElementById("project-modal-image");
+  const modalTitle = document.getElementById("project-modal-title");
+  const modalDescription = document.getElementById("project-modal-description");
+  const modalTags = document.getElementById("project-modal-tags");
+  const modalYear = document.getElementById("project-modal-year");
+  const modalCloseButton = document.querySelector(".project-modal-close");
+  const modalBackdrop = document.querySelector(".project-modal-backdrop");
 
-  console.log(projectsArray);
+  //Closes the project modal and removes the "is-open" class
+  function closeProjectModal() {
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+  }
 
-  //Displays each project on the page
-  projectsArray.forEach((project) => {
-    console.log(project.images);
-    //Creates new element and adds a class to it
-    let projectElement = document.createElement("div");
-    projectElement.classList.add("project-item");
-    projectElement.setAttribute("tabindex", "0");
+  //Opens the project modal and populates it with the project data
+  //If the project has no image, it uses a fallback image
+  //If the project receives no name, description, or year, it uses a fallback text
+  function openProjectModal(project) {
+    const imageSource =
+      project.images && project.images[0] && project.images[0].url
+        ? project.images[0].url
+        : PROJECT_IMAGE_FALLBACK;
 
-    let projectImage = document.createElement("img");
-    projectImage.classList.add("project-item-image");
-    projectImage.src = project.images[0].url;
-    projectImage.alt = "";
-    projectImage.setAttribute("aria-hidden", "true");
-    projectElement.appendChild(projectImage);
+    modalImage.src = imageSource;
+    modalImage.alt = project.name || "Project preview";
+    modalTitle.textContent = project.name || "Project";
+    modalDescription.textContent =
+      project.description || "No description available.";
+    modalYear.textContent = project.year || "Year unavailable";
 
-    let projectGradient = document.createElement("div");
-    projectGradient.classList.add("project-item-gradient");
-    projectGradient.setAttribute("aria-hidden", "true");
-    projectElement.appendChild(projectGradient);
-
-    let projectTags = document.createElement("div");
-    projectTags.classList.add("project-item-tags");
-
-    project.category.forEach((category) => {
-      let projectTag = document.createElement("span");
-      projectTag.classList.add("project-item-tag");
-      projectTag.textContent = category;
-      projectTags.appendChild(projectTag);
+    modalTags.innerHTML = "";
+    const categories = Array.isArray(project.category) ? project.category : [];
+    categories.forEach((category) => {
+      const tag = document.createElement("span");
+      tag.classList.add("project-modal-tag");
+      tag.textContent = category;
+      modalTags.appendChild(tag);
     });
-    projectElement.appendChild(projectTags);
 
-    //Creates the text container inside the project card
-    let projectContent = document.createElement("div");
-    projectContent.classList.add("project-item-content");
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+  }
 
-    //Project title
-    let projectTitle = document.createElement("h3");
-    projectTitle.classList.add("project-item-title");
-    projectTitle.textContent = project.name;
+  //Initializes the page by loading projects and displaying them
+  async function init() {
+    let projectsArray = [];
+    //Loads projects from AirTable API
+    const projects = await loadProjects();
+    //Adds each project to the projectsArray
+    projects.records.forEach((project) => {
+      projectsArray.push(project.fields);
+    });
+    //Sorts the projectsArray by ID in ascending order
+    projectsArray.sort((a, b) => a.id - b.id);
 
-    //Project description
-    let projectDescription = document.createElement("p");
-    projectDescription.classList.add("project-item-description");
-    projectDescription.textContent = project.description;
+    console.log(projectsArray);
 
-    let projectMeta = document.createElement("div");
-    projectMeta.classList.add("project-item-meta");
+    //Displays each project on the page
+    projectsArray.forEach((project) => {
+      console.log(project.images);
+      //Creates new element and adds a class to it
+      let projectElement = document.createElement("div");
+      projectElement.classList.add("project-item");
+      projectElement.setAttribute("tabindex", "0");
+      projectElement.setAttribute("role", "button");
+      projectElement.setAttribute(
+        "aria-label",
+        `Open details for ${project.name}`,
+      );
 
-    let projectYear = document.createElement("span");
-    projectYear.classList.add("project-item-year");
-    projectYear.textContent = project.year;
+      //Adds image to the project card
+      let projectImage = document.createElement("img");
+      projectImage.classList.add("project-item-image");
+      projectImage.src = project.images[0].url;
+      projectImage.alt = "";
+      projectImage.setAttribute("aria-hidden", "true");
+      projectElement.appendChild(projectImage);
 
-    projectContent.appendChild(projectTitle);
-    projectMeta.appendChild(projectDescription);
-    projectMeta.appendChild(projectYear);
-    projectContent.appendChild(projectMeta);
-    projectElement.appendChild(projectContent);
+      //Adds gradient overlay to the project card
+      let projectGradient = document.createElement("div");
+      projectGradient.classList.add("project-item-gradient");
+      projectGradient.setAttribute("aria-hidden", "true");
+      projectElement.appendChild(projectGradient);
 
-    //Adds new element to page
-    document.querySelector(".projects-list").appendChild(projectElement);
+      //Adds tags to the project card
+      let projectTags = document.createElement("div");
+      projectTags.classList.add("project-item-tags");
+
+      //Adds each category as a tag to the project card
+      project.category.forEach((category) => {
+        let projectTag = document.createElement("span");
+        projectTag.classList.add("project-item-tag");
+        projectTag.textContent = category;
+        projectTags.appendChild(projectTag);
+      });
+      projectElement.appendChild(projectTags);
+
+      //Creates the text container inside the project card
+      let projectContent = document.createElement("div");
+      projectContent.classList.add("project-item-content");
+
+      //Project title
+      let projectTitle = document.createElement("h3");
+      projectTitle.classList.add("project-item-title");
+      projectTitle.textContent = project.name;
+
+      //Project description
+      let projectDescription = document.createElement("p");
+      projectDescription.classList.add("project-item-description");
+      projectDescription.textContent = project.description;
+
+      //Project item meta container
+      let projectMeta = document.createElement("div");
+      projectMeta.classList.add("project-item-meta");
+
+      //Project year
+      let projectYear = document.createElement("span");
+      projectYear.classList.add("project-item-year");
+      projectYear.textContent = project.year;
+
+      //Adds the title, description, and year to the project content container
+      projectContent.appendChild(projectTitle);
+      projectMeta.appendChild(projectDescription);
+      projectMeta.appendChild(projectYear);
+      projectContent.appendChild(projectMeta);
+      projectElement.appendChild(projectContent);
+
+      //Adds event listeners to open the project modal when clicked or when Enter/Space is pressed
+      projectElement.addEventListener("click", () => openProjectModal(project));
+      projectElement.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openProjectModal(project);
+        }
+      });
+
+      //Adds new element to page
+      document.querySelector(".projects-list").appendChild(projectElement);
+    });
+  }
+
+  //Adds event listeners to close the project modal when the close button or backdrop is clicked, or when the Escape key is pressed
+  modalCloseButton.addEventListener("click", closeProjectModal);
+  modalBackdrop.addEventListener("click", closeProjectModal);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && modal.classList.contains("is-open")) {
+      closeProjectModal();
+    }
   });
-}
 
-init();
+  init();
+});
