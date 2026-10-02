@@ -476,7 +476,7 @@ Projects section :
 	inset: 0 0 auto;
 	height: 21vw;
 	z-index: -1;
-	background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 62%, var(--primary-background-color) 100%), url("../assets/imgs/projects_banner_img.png");
+	background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 62%, var(--primary-background-color) 100%), url("../imgs/projects_banner_img.png");
 	background-position: center top;
 	background-size: 100% auto;
 	background-repeat: no-repeat;
@@ -983,7 +983,7 @@ Contact section :
 	position: absolute;
 	inset: 0;
 	display: block;
-	background-image: url("../assets/imgs/contact_bg_img.png");
+	background-image: url("../imgs/contact_bg_img.png");
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: contain;
