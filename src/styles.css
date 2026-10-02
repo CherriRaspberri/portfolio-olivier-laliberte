@@ -27,6 +27,7 @@ html {
 body {
 	margin: 0;
 	min-height: 100vh;
+	overflow-y: scroll;
 	background: var(--primary-background-color);
 	color: var(--primary-text-color);
 	font-family: Arial, Helvetica, sans-serif;
@@ -768,7 +769,15 @@ Projects section :
 }
 
 body.modal-open {
-	overflow: hidden;
+	overscroll-behavior: none;
+}
+
+body.modal-open .infinite-banner {
+	z-index: 0;
+}
+
+body.modal-open.modal-open-banner-sticky .infinite-banner {
+	z-index: 200;
 }
 
 @media (max-width: 640px) {

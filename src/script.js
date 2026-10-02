@@ -28,12 +28,73 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalYear = document.getElementById("project-modal-year");
   const modalCloseButton = document.querySelector(".project-modal-close");
   const modalBackdrop = document.querySelector(".project-modal-backdrop");
+  const infiniteBanner = document.querySelector(".infinite-banner");
+  let lockedScrollY = 0;
+
+  //Checks if banner is stickyor at its place on the page
+  function isBannerSticky() {
+    if (!infiniteBanner) {
+      return false;
+    }
+
+    const bannerRect = infiniteBanner.getBoundingClientRect();
+    return bannerRect.top <= 0 && bannerRect.bottom > 0;
+  }
+
+  //Locks the scroll position to the current Y position
+  function lockScrollPosition() {
+    window.scrollTo(0, lockedScrollY);
+  }
+
+  //Prevents scrolling with mouse wheel or touch input
+  function preventScrollInput(event) {
+    event.preventDefault();
+  }
+
+  //Prevents scrolling with keyboard keys
+  function preventScrollKeys(event) {
+    const scrollKeys = [
+      "ArrowUp",
+      "ArrowDown",
+      "PageUp",
+      "PageDown",
+      "Home",
+      "End",
+      " ",
+    ];
+
+    //Checks if the pressed key is one of the scroll keys; prevents the default action if it is
+    if (scrollKeys.includes(event.key)) {
+      event.preventDefault();
+    }
+  }
+
+  //Enables the scroll lock
+  function enableScrollLock() {
+    lockedScrollY = window.scrollY;
+    window.addEventListener("scroll", lockScrollPosition, { passive: false });
+    document.addEventListener("wheel", preventScrollInput, { passive: false });
+    document.addEventListener("touchmove", preventScrollInput, {
+      passive: false,
+    });
+    document.addEventListener("keydown", preventScrollKeys);
+  }
+
+  //Disables the scroll lock
+  function disableScrollLock() {
+    window.removeEventListener("scroll", lockScrollPosition);
+    document.removeEventListener("wheel", preventScrollInput);
+    document.removeEventListener("touchmove", preventScrollInput);
+    document.removeEventListener("keydown", preventScrollKeys);
+  }
 
   //Closes the project modal and removes the "is-open" class
   function closeProjectModal() {
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden", "true");
+    disableScrollLock();
     document.body.classList.remove("modal-open");
+    document.body.classList.remove("modal-open-banner-sticky");
   }
 
   //Opens the project modal and populates it with the project data
@@ -63,6 +124,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
+    document.body.classList.toggle("modal-open-banner-sticky", isBannerSticky());
+    enableScrollLock();
     document.body.classList.add("modal-open");
   }
 
@@ -173,5 +236,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  //Initializes the page
   init();
 });
