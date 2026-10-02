@@ -40,13 +40,29 @@ Est-ce que ça serait possible d'ajouter 3 nouvelles cartes en bas des anciennes
 ### PROCHAINE ÉTAPE :
 - Programmation du site (production).
 
-## PRODUCTION
+## PRODUCTION Bloc 2 : intégration et données
 
-### VS CODE :
-- *25/09/2026* : Création de la page index.html. Utilisation d'IA pour le formattage de la page et la position. Création du Header avec l'IA + Hero.
+### ACCOMPLISSEMENTS :
+- Création du site. 
+- Ajout du header et de ses animations.
+- Ajout du hero (texte, image, boutons, overlay, layout).
+- Ajout d'une bannière infinie.
+- Ajout de la section projets (tirée directement du API Airtable).
+- Ajout des détails de la section projets (image de background, titre, details).
+- Ajout de la section à propos (titre, texte, vidéo, table avec forces et logiciels, details).
+- Ajout de la section contact (image de background, titre, liens externes).
+- Ajout d'animations.
 
-### GITHUB :
-- *25/09/2026* : commits - 1er uplaod du site
+### DIFFICULTÉS : 
+- Faire fonctionner la bannière infinie était plus dûr que je le pensais.
+
+### NOUVEAUX APPRENTISSAGES : 
+- Utilisation du API Airtable et le connecter à un projet.
+- Utilisation de l'IA pour faire mes placeholders.
 
 ### UTILISATION D'IA :
-- *25/09/2026* : "Je veux un header mince avec un border-bottom de 1px blanc. À l'intérieur, je veux 2 boites de texte : une à gauche et une à droite. Dans celle de gauche, 'PORTFOLIO - 2026' est écrit, et dans celle de droit, je veux 3 liens : 'work', 'about', 'contact'."
+- J'ai utilisé l'IA pour faire ma structure de site et mes placeholders. Je voulais tester à quel point l'IA était efficace dans sa manière d'écrire du code. 
+
+### PROCHAINE ÉTAPE : 
+- Ajout d'animations.
+
