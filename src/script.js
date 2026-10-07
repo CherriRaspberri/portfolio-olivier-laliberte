@@ -21,17 +21,51 @@ document.addEventListener("DOMContentLoaded", () => {
   //Finder :
   //Gets the modal and its elements from the DOM
   const modal = document.getElementById("project-modal");
-  const modalImage = document.getElementById("project-modal-image");
+  const modalGallery = document.getElementById("project-modal-gallery");
   const modalTitle = document.getElementById("project-modal-title");
   const modalDescription = document.getElementById("project-modal-description");
   const modalTags = document.getElementById("project-modal-tags");
+  const modalLink = document.getElementById("project-modal-link");
   const modalYear = document.getElementById("project-modal-year");
   const modalCloseButton = document.querySelector(".project-modal-close");
   const modalBackdrop = document.querySelector(".project-modal-backdrop");
+  const modalDialog = document.querySelector(".project-modal-dialog");
+  const modalMedia = document.querySelector(".project-modal-media");
   const infiniteBanner = document.querySelector(".infinite-banner");
   let lockedScrollY = 0;
 
-  //Checks if banner is stickyor at its place on the page
+  function getProjectLink(project) {
+    const linkValue =
+      project.link ||
+      project.website ||
+      project.url ||
+      project.external_link ||
+      project.externalLink ||
+      project.source_url ||
+      project.sourceUrl;
+
+    if (typeof linkValue === "string") {
+      return linkValue.trim();
+    }
+
+    return "";
+  }
+
+  function getProjectLinkLabel(project, fallbackLink) {
+    const labelValue = project.link_name;
+
+    if (typeof labelValue === "string" && labelValue.trim()) {
+      return labelValue.trim();
+    }
+
+    if (fallbackLink) {
+      return fallbackLink;
+    }
+
+    return "Link";
+  }
+
+  //Checks if banner is sticky or at its place on the page
   function isBannerSticky() {
     if (!infiniteBanner) {
       return false;
@@ -41,13 +75,16 @@ document.addEventListener("DOMContentLoaded", () => {
     return bannerRect.top <= 0 && bannerRect.bottom > 0;
   }
 
-  //Locks the scroll position to the current Y position
-  function lockScrollPosition() {
-    window.scrollTo(0, lockedScrollY);
-  }
-
   //Prevents scrolling with mouse wheel or touch input
   function preventScrollInput(event) {
+    if (
+      modalDialog &&
+      event.target instanceof Node &&
+      modalDialog.contains(event.target)
+    ) {
+      return;
+    }
+
     event.preventDefault();
   }
 
@@ -72,7 +109,13 @@ document.addEventListener("DOMContentLoaded", () => {
   //Enables the scroll lock
   function enableScrollLock() {
     lockedScrollY = window.scrollY;
-    window.addEventListener("scroll", lockScrollPosition, { passive: false });
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${lockedScrollY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
     document.addEventListener("wheel", preventScrollInput, { passive: false });
     document.addEventListener("touchmove", preventScrollInput, {
       passive: false,
@@ -82,10 +125,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //Disables the scroll lock
   function disableScrollLock() {
-    window.removeEventListener("scroll", lockScrollPosition);
+    const storedOffset = document.body.style.top;
+    const restoredScrollY = storedOffset
+      ? Math.abs(parseInt(storedOffset, 10))
+      : lockedScrollY;
+
     document.removeEventListener("wheel", preventScrollInput);
     document.removeEventListener("touchmove", preventScrollInput);
     document.removeEventListener("keydown", preventScrollKeys);
+    document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    document.body.style.width = "";
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
+
+    //Temporarily bypass smooth scrolling to prevent visual jump on restore.
+    const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = "auto";
+    window.scrollTo(0, restoredScrollY);
+    requestAnimationFrame(() => {
+      document.documentElement.style.scrollBehavior = previousScrollBehavior;
+    });
   }
 
   //Closes the project modal and removes the "is-open" class
@@ -101,17 +163,40 @@ document.addEventListener("DOMContentLoaded", () => {
   //If the project has no image, it uses a fallback image
   //If the project receives no name, description, or year, it uses a fallback text
   function openProjectModal(project) {
-    const imageSource =
-      project.images && project.images[0] && project.images[0].url
-        ? project.images[0].url
-        : PROJECT_IMAGE_FALLBACK;
+    const modalImages = Array.isArray(project.images)
+      ? project.images.slice(1).filter((image) => image && image.url)
+      : [];
 
-    modalImage.src = imageSource;
-    modalImage.alt = project.name || "Project preview";
+    const galleryImages =
+      modalImages.length > 0
+        ? modalImages
+        : [{ url: PROJECT_IMAGE_FALLBACK }];
+
+    modalGallery.innerHTML = "";
+    galleryImages.forEach((image, index) => {
+      const modalImage = document.createElement("img");
+      modalImage.src = image.url;
+      modalImage.alt = `${project.name || "Project"} image ${index + 1}`;
+      modalGallery.appendChild(modalImage);
+    });
+
     modalTitle.textContent = project.name || "Project";
     modalDescription.textContent =
-      project.description || "No description available.";
+      project.full_description || "No description available.";
     modalYear.textContent = project.year || "Year unavailable";
+
+    const projectLink = getProjectLink(project);
+    if (projectLink) {
+      modalLink.href = projectLink;
+      modalLink.textContent = getProjectLinkLabel(project, projectLink);
+      modalLink.title = projectLink;
+      modalLink.classList.remove("is-hidden");
+    } else {
+      modalLink.removeAttribute("href");
+      modalLink.textContent = "Link";
+      modalLink.removeAttribute("title");
+      modalLink.classList.add("is-hidden");
+    }
 
     modalTags.innerHTML = "";
     const categories = Array.isArray(project.category) ? project.category : [];
