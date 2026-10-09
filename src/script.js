@@ -1,12 +1,13 @@
+// Constants for AirTable API
 const BASE_ID = "appnsFgnlCfcgfek1";
 const TABLE = "Projects";
 const TOKEN =
   "patpEOf7IvM7kNzlp.a62985958d240f1a5272ec69667a228fc66d57689bf4bc002674c1a95b47a1bd";
 const PROJECT_IMAGE_FALLBACK = "./assets/imgs/projects_banner_img.png";
 
-//Loads projects from AirTable API
+// Loads projects from AirTable API
 async function loadProjects() {
-  //Fetch from link given (projects DB)
+  // Fetch from link given (projects DB)
   const response = await fetch(
     `https://api.airtable.com/v0/${BASE_ID}/${TABLE}`,
     {
@@ -16,10 +17,10 @@ async function loadProjects() {
   return await response.json();
 }
 
-//Waits for weebsite to load
+// Waits for website to load, then initializes the page by loading projects and displaying them
 document.addEventListener("DOMContentLoaded", () => {
-  //Finder :
-  //Gets the modal and its elements from the DOM
+  // Finder :
+  // Gets the modal and its elements from the DOM
   const modal = document.getElementById("project-modal");
   const modalGallery = document.getElementById("project-modal-gallery");
   const modalTitle = document.getElementById("project-modal-title");
@@ -34,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const infiniteBanner = document.querySelector(".infinite-banner");
   let lockedScrollY = 0;
 
+  // Gets the link for the project, using a fallback if necessary
   function getProjectLink(project) {
     const linkValue =
       project.link ||
@@ -51,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return "";
   }
 
+  // Gets the label for the project link, using a fallback if necessary
   function getProjectLinkLabel(project, fallbackLink) {
     const labelValue = project.link_name;
 
@@ -65,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return "Link";
   }
 
-  //Checks if banner is sticky or at its place on the page
+  // Checks if banner is sticky or at its place on the page
   function isBannerSticky() {
     if (!infiniteBanner) {
       return false;
@@ -75,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return bannerRect.top <= 0 && bannerRect.bottom > 0;
   }
 
-  //Prevents scrolling with mouse wheel or touch input
+  // Prevents scrolling with mouse wheel or touch input
   function preventScrollInput(event) {
     if (
       modalDialog &&
@@ -88,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
   }
 
-  //Prevents scrolling with keyboard keys
+  // Prevents scrolling with keyboard keys
   function preventScrollKeys(event) {
     const scrollKeys = [
       "ArrowUp",
@@ -100,13 +103,13 @@ document.addEventListener("DOMContentLoaded", () => {
       " ",
     ];
 
-    //Checks if the pressed key is one of the scroll keys; prevents the default action if it is
+    // Checks if the pressed key is one of the scroll keys; prevents the default action if it is
     if (scrollKeys.includes(event.key)) {
       event.preventDefault();
     }
   }
 
-  //Enables the scroll lock
+  // Enables the scroll lock
   function enableScrollLock() {
     lockedScrollY = window.scrollY;
     document.body.style.position = "fixed";
@@ -123,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("keydown", preventScrollKeys);
   }
 
-  //Disables the scroll lock
+  // Disables the scroll lock
   function disableScrollLock() {
     const storedOffset = document.body.style.top;
     const restoredScrollY = storedOffset
@@ -141,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.style.overflow = "";
     document.documentElement.style.overflow = "";
 
-    //Temporarily bypass smooth scrolling to prevent visual jump on restore.
+    // Temporarily bypass smooth scrolling to prevent visual jump on restore.
     const previousScrollBehavior = document.documentElement.style.scrollBehavior;
     document.documentElement.style.scrollBehavior = "auto";
     window.scrollTo(0, restoredScrollY);
@@ -150,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  //Closes the project modal and removes the "is-open" class
+  // Closes the project modal and removes the "is-open" class
   function closeProjectModal() {
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden", "true");
@@ -159,19 +162,16 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.remove("modal-open-banner-sticky");
   }
 
-  //Opens the project modal and populates it with the project data
-  //If the project has no image, it uses a fallback image
-  //If the project receives no name, description, or year, it uses a fallback text
+  // Opens the project modal and populates it with the project data
+  // If the project has no image, it uses a fallback image
+  // If the project receives no name, description, or year, it uses a fallback text
   function openProjectModal(project) {
-    const modalImages = Array.isArray(project.images)
-      ? project.images.slice(1).filter((image) => image && image.url)
-      : [];
+    // Filters out any invalid images and creates an array of valid images for the modal gallery
+    const modalImages = Array.isArray(project.images) ? project.images.slice(1).filter((image) => image && image.url) : [];
+    // If there are no images, use the fallback image
+    const galleryImages = modalImages.length > 0 ? modalImages : [{ url: PROJECT_IMAGE_FALLBACK }];
 
-    const galleryImages =
-      modalImages.length > 0
-        ? modalImages
-        : [{ url: PROJECT_IMAGE_FALLBACK }];
-
+    // Clears the modal gallery and populates it with the project's images or a fallback image
     modalGallery.innerHTML = "";
     galleryImages.forEach((image, index) => {
       const modalImage = document.createElement("img");
@@ -180,11 +180,13 @@ document.addEventListener("DOMContentLoaded", () => {
       modalGallery.appendChild(modalImage);
     });
 
+    // Populates the modal with the project name, description, and year, using fallback text if necessary
     modalTitle.textContent = project.name || "Project";
     modalDescription.textContent =
       project.full_description || "No description available.";
     modalYear.textContent = project.year || "Year unavailable";
 
+    // Populates the modal with the project link if it exists, otherwise hides the link
     const projectLink = getProjectLink(project);
     if (projectLink) {
       modalLink.href = projectLink;
@@ -198,6 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
       modalLink.classList.add("is-hidden");
     }
 
+    // Populates the modal with project tags
     modalTags.innerHTML = "";
     const categories = Array.isArray(project.category) ? project.category : [];
     categories.forEach((category) => {
@@ -207,31 +210,35 @@ document.addEventListener("DOMContentLoaded", () => {
       modalTags.appendChild(tag);
     });
 
+    // Adds the "is-open" class to the modal to open it
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
+    // Removes the "modal-open-banner-sticky" class from the body if the infinite-scrolling banner is not sticky, and adds it if it is sticky
     document.body.classList.toggle("modal-open-banner-sticky", isBannerSticky());
+
+    // Enables scroll lock when the modal is open
     enableScrollLock();
     document.body.classList.add("modal-open");
   }
 
-  //Initializes the page by loading projects and displaying them
+  // Initializes the page by loading projects and displaying them
   async function init() {
     let projectsArray = [];
-    //Loads projects from AirTable API
+    // Loads projects from AirTable API
     const projects = await loadProjects();
-    //Adds each project to the projectsArray
+    // Adds each project to the projectsArray
     projects.records.forEach((project) => {
       projectsArray.push(project.fields);
     });
-    //Sorts the projectsArray by ID in ascending order
+    // Sorts the projectsArray by ID in ascending order
     projectsArray.sort((a, b) => a.id - b.id);
 
     console.log(projectsArray);
 
-    //Displays each project on the page
+    // Displays each project on the page
     projectsArray.forEach((project) => {
       console.log(project.images);
-      //Creates new element and adds a class to it
+      // Creates new element and adds a class to it
       let projectElement = document.createElement("div");
       projectElement.classList.add("project-item");
       projectElement.setAttribute("tabindex", "0");
@@ -241,7 +248,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `Open details for ${project.name}`,
       );
 
-      //Adds image to the project card
+      // Adds image to the project card
       let projectImage = document.createElement("img");
       projectImage.classList.add("project-item-image");
       projectImage.src = project.images[0].url;
@@ -249,17 +256,17 @@ document.addEventListener("DOMContentLoaded", () => {
       projectImage.setAttribute("aria-hidden", "true");
       projectElement.appendChild(projectImage);
 
-      //Adds gradient overlay to the project card
+      // Adds gradient overlay to the project card
       let projectGradient = document.createElement("div");
       projectGradient.classList.add("project-item-gradient");
       projectGradient.setAttribute("aria-hidden", "true");
       projectElement.appendChild(projectGradient);
 
-      //Adds tags to the project card
+      // Adds tags to the project card
       let projectTags = document.createElement("div");
       projectTags.classList.add("project-item-tags");
 
-      //Adds each category as a tag to the project card
+      // Adds each category as a tag to the project card
       project.category.forEach((category) => {
         let projectTag = document.createElement("span");
         projectTag.classList.add("project-item-tag");
@@ -268,37 +275,37 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       projectElement.appendChild(projectTags);
 
-      //Creates the text container inside the project card
+      // Creates the text container inside the project card
       let projectContent = document.createElement("div");
       projectContent.classList.add("project-item-content");
 
-      //Project title
+      // Project title
       let projectTitle = document.createElement("h3");
       projectTitle.classList.add("project-item-title");
       projectTitle.textContent = project.name;
 
-      //Project description
+      // Project description
       let projectDescription = document.createElement("p");
       projectDescription.classList.add("project-item-description");
       projectDescription.textContent = project.description;
 
-      //Project item meta container
+      // Project item meta container
       let projectMeta = document.createElement("div");
       projectMeta.classList.add("project-item-meta");
 
-      //Project year
+      // Project year
       let projectYear = document.createElement("span");
       projectYear.classList.add("project-item-year");
       projectYear.textContent = project.year;
 
-      //Adds the title, description, and year to the project content container
+      // Adds the title, description, and year to the project content container
       projectContent.appendChild(projectTitle);
       projectMeta.appendChild(projectDescription);
       projectMeta.appendChild(projectYear);
       projectContent.appendChild(projectMeta);
       projectElement.appendChild(projectContent);
 
-      //Adds event listeners to open the project modal when clicked or when Enter/Space is pressed
+      // Adds event listeners to open the project modal when clicked or when Enter/Space is pressed
       projectElement.addEventListener("click", () => openProjectModal(project));
       projectElement.addEventListener("keydown", (event) => {
         if (event.key === "Enter" || event.key === " ") {
@@ -307,12 +314,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      //Adds new element to page
+      // Adds new element to page
       document.querySelector(".projects-list").appendChild(projectElement);
     });
   }
 
-  //Adds event listeners to close the project modal when the close button or backdrop is clicked, or when the Escape key is pressed
+  // Adds event listeners to close the project modal when the close button or backdrop is clicked, or when the Escape key is pressed
   modalCloseButton.addEventListener("click", closeProjectModal);
   modalBackdrop.addEventListener("click", closeProjectModal);
   document.addEventListener("keydown", (event) => {
@@ -321,6 +328,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  //Initializes the page
+  // Initializes the page
   init();
 });
