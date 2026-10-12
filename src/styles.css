@@ -1427,6 +1427,10 @@ Media query for screen width of 900px:
 		overflow-wrap: anywhere;
 	}
 
+	.hero-copy-line--eyebrow {
+		margin-bottom: 1rem;
+	}
+
 	.hero-copy-line--title {
 		font-size: clamp(2.6rem, 11vw, 4.4rem);
 	}
@@ -1446,6 +1450,23 @@ Media query for screen width of 900px:
 	.hero-button--contact {
 		width: 100%;
 		min-width: 0;
+	}
+}
+
+@media (max-width: 640px) {
+	.hero-copy {
+		transform: translateY(5rem);
+	}
+
+	.hero-description {
+		color: var(--primary-text-color);
+	}
+
+	.hero-description-box,
+	.hero-actions {
+		flex-direction: column;
+		align-items: stretch;
+		width: 100%;
 	}
 }
 
