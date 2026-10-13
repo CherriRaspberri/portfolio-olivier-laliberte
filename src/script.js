@@ -270,6 +270,7 @@ document.addEventListener("DOMContentLoaded", () => {
       project.category.forEach((category) => {
         let projectTag = document.createElement("span");
         projectTag.classList.add("project-item-tag");
+        projectTag.classList.add("bbh-bartle-regular");
         projectTag.textContent = category;
         projectTags.appendChild(projectTag);
       });
@@ -282,11 +283,13 @@ document.addEventListener("DOMContentLoaded", () => {
       // Project title
       let projectTitle = document.createElement("h3");
       projectTitle.classList.add("project-item-title");
+      projectTitle.classList.add("climate-crisis-titles");
       projectTitle.textContent = project.name;
 
       // Project description
       let projectDescription = document.createElement("p");
       projectDescription.classList.add("project-item-description");
+      projectDescription.classList.add("saira-condensed-regular");
       projectDescription.textContent = project.description;
 
       // Project item meta container
@@ -296,6 +299,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Project year
       let projectYear = document.createElement("span");
       projectYear.classList.add("project-item-year");
+      projectYear.classList.add("bbh-bogle-regular");
       projectYear.textContent = project.year;
 
       // Adds the title, description, and year to the project content container
