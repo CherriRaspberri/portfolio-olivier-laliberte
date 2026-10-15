@@ -1,0 +1,20 @@
+/*Color variables*/
+:root {
+    --primary-border-color: #f5f5f5;
+	--secondary-border-color: #FF5555;
+
+	--primary-background-color: #000000;
+
+	--primary-text-color: #f5f5f5;
+	--secondary-text-color: #EBff00;
+	--third-text-color: #FF5555;
+	--fourth-text-color: #000000;
+	--fifth-text-color: #757575;
+
+	--separation-line-color: #303030;
+
+	--primary-button-color: #EBff00;
+	--hover-button-color: #000000;
+
+	--primary-tag-color: rgba(75, 31, 31, 0.7);
+}

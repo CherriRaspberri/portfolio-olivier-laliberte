@@ -1,0 +1,72 @@
+/*
+Infinite banner :
+- Banner track with scrolling animation
+- Banner groups with text content
+*/
+.infinite-banner {
+	position: sticky;
+	top: 0;
+	z-index: 10;
+	width: 100%;
+	overflow: hidden;
+	background: var(--primary-background-color);
+	color: var(--third-text-color);
+	border-top: 1px solid var(--third-text-color);
+	border-bottom: 1px solid var(--third-text-color);
+}
+
+.infinite-banner-track {
+	display: flex;
+	will-change: transform;
+	/* Make the track twice as wide as the container so the duplicated
+	   groups sit side-by-side (first half + duplicate in second half) */
+	width: 200%;
+	box-sizing: border-box;
+}
+
+.infinite-banner-group {
+	display: flex;
+	align-items: center;
+	/* Each group occupies half the track (50% of the viewport) */
+	flex: 0 0 50%;
+	box-sizing: border-box;
+	gap: 1.5rem;
+	padding: 0.55rem 1.5rem;
+	white-space: nowrap;
+	font-size: clamp(0.9rem, 1.6vw, 1.35rem);
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.infinite-banner-group span:nth-child(even) {
+	font-size: 0.8em;
+}
+
+@keyframes banner-scroll-right {
+	from { transform: translateX(0); }
+	to { transform: translateX(-50%); }
+}
+
+.infinite-banner-track {
+	animation: banner-scroll-right 24s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.infinite-banner-track {
+		animation-play-state: paused;
+	}
+
+	.about-heading,
+	.about-description,
+	.about-table,
+	.about-tags,
+	.about-tag,
+	.projects-reference-group,
+	.projects-title,
+	.project-item {
+		animation: none;
+	}
+}
+
+/* #endregion */

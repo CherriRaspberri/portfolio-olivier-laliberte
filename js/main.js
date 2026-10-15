@@ -1,22 +1,3 @@
-// Constants for AirTable API
-const BASE_ID = "appnsFgnlCfcgfek1";
-const TABLE = "Projects";
-const TOKEN =
-  "patpEOf7IvM7kNzlp.a62985958d240f1a5272ec69667a228fc66d57689bf4bc002674c1a95b47a1bd";
-const PROJECT_IMAGE_FALLBACK = "./assets/imgs/projects_banner_img.png";
-
-// Loads projects from AirTable API
-async function loadProjects() {
-  // Fetch from link given (projects DB)
-  const response = await fetch(
-    `https://api.airtable.com/v0/${BASE_ID}/${TABLE}`,
-    {
-      headers: { Authorization: `Bearer ${TOKEN}` },
-    },
-  );
-  return await response.json();
-}
-
 // Waits for website to load, then initializes the page by loading projects and displaying them
 document.addEventListener("DOMContentLoaded", () => {
   // Finder :
@@ -31,20 +12,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalCloseButton = document.querySelector(".project-modal-close");
   const modalBackdrop = document.querySelector(".project-modal-backdrop");
   const modalDialog = document.querySelector(".project-modal-dialog");
-  const modalMedia = document.querySelector(".project-modal-media");
   const infiniteBanner = document.querySelector(".infinite-banner");
+
+  //Screen lock variable
   let lockedScrollY = 0;
+  let modalTrigger = null;
 
   // Gets the link for the project, using a fallback if necessary
   function getProjectLink(project) {
-    const linkValue =
-      project.link ||
-      project.website ||
-      project.url ||
-      project.external_link ||
-      project.externalLink ||
-      project.source_url ||
-      project.sourceUrl;
+    const linkValue = project.link || project.website || project.url || project.external_link || project.externalLink || project.source_url || project.sourceUrl;
 
     if (typeof linkValue === "string") {
       return linkValue.trim();
@@ -155,17 +131,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Closes the project modal and removes the "is-open" class
   function closeProjectModal() {
+    if (modalTrigger && document.contains(modalTrigger)) {
+      modalTrigger.focus();
+    } else {
+      modalCloseButton.blur();
+    }
+
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden", "true");
     disableScrollLock();
     document.body.classList.remove("modal-open");
     document.body.classList.remove("modal-open-banner-sticky");
+    modalTrigger = null;
   }
 
   // Opens the project modal and populates it with the project data
   // If the project has no image, it uses a fallback image
   // If the project receives no name, description, or year, it uses a fallback text
   function openProjectModal(project) {
+    modalTrigger = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+
     // Filters out any invalid images and creates an array of valid images for the modal gallery
     const modalImages = Array.isArray(project.images) ? project.images.slice(1).filter((image) => image && image.url) : [];
     // If there are no images, use the fallback image
@@ -213,6 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Adds the "is-open" class to the modal to open it
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
+    modalCloseButton.focus({ preventScroll: true });
     // Removes the "modal-open-banner-sticky" class from the body if the infinite-scrolling banner is not sticky, and adds it if it is sticky
     document.body.classList.toggle("modal-open-banner-sticky", isBannerSticky());
 

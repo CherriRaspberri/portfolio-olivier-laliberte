@@ -1,0 +1,127 @@
+/*
+Project card component :
+- Project item layout and positioning (grid layout)
+- Project item hover effects (title translation, description and year fade-in)
+*/
+
+.project-item {
+	position: relative;
+	width: 100%;
+	min-height: 21rem;
+	box-sizing: border-box;
+	margin: 0;
+	border: 1px solid var(--primary-border-color);
+	background: var(--primary-background-color);
+	overflow: hidden;
+}
+
+.project-item:hover {
+	cursor: pointer;
+}
+
+.project-item-gradient {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 1) 60%);
+}
+
+.project-item-image {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+}
+
+.project-item-tags {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	z-index: 2;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+}
+
+.project-item-tag {
+	padding: 0.3rem 0.5rem;
+	background-color: var(--primary-tag-color);
+	border: 1px solid var(--secondary-text-color);
+	color: var(--secondary-text-color);
+	font-size: 0.62rem;
+	letter-spacing: 0.06em;
+	line-height: 1;
+	text-transform: uppercase;
+}
+
+.project-item-content {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	align-items: flex-start;
+	position: relative;
+	z-index: 2;
+	min-height: 21rem;
+	box-sizing: border-box;
+	padding: 1rem;
+	text-align: left;
+}
+
+.project-item-title {
+	margin: 0;
+	color: var(--primary-text-color);
+	font-size: clamp(1.5rem, 3vw, 2.5rem);
+	font-weight: 800;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	transition: transform 250ms ease;
+}
+
+.project-item-description {
+	max-width: 18rem;
+	max-height: 0;
+	margin: 0;
+	overflow: hidden;
+	color: var(--primary-text-color);
+	font-size: 0.75rem;
+	line-height: 1.35;
+	opacity: 0;
+	transition: max-height 250ms ease, margin 250ms ease, opacity 250ms ease;
+}
+
+.project-item-meta {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	width: 100%;
+	gap: 1rem;
+}
+
+.project-item-year {
+	flex: 0 0 auto;
+	color: var(--secondary-text-color);
+	font-size: 0.75rem;
+	line-height: 1.35;
+	opacity: 0;
+	transition: opacity 250ms ease;
+}
+
+.project-item:hover .project-item-description,
+.project-item:focus .project-item-description {
+	max-height: 4rem;
+	margin-bottom: 0;
+	opacity: 1;
+}
+
+.project-item:hover .project-item-title,
+.project-item:focus .project-item-title {
+	transform: translateY(-0.35rem);
+}
+
+.project-item:hover .project-item-year,
+.project-item:focus .project-item-year {
+	opacity: 1;
+}
