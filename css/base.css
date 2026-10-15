@@ -234,7 +234,7 @@ Hero section :
 	gap: 0.35rem;
 	overflow: hidden;
 	container-type: inline-size;
-	background-image: url("../assets/imgs/square_grid_bg.png");
+	background-image: url("../assets/imgs/square_grid_bg.webp");
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: min(70%, 32rem);
@@ -477,7 +477,7 @@ Projects section :
 	inset: 0 0 auto;
 	height: 21vw;
 	z-index: -1;
-	background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 62%, var(--primary-background-color) 100%), url("../assets/imgs/projects_banner_img.png");
+	background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 62%, var(--primary-background-color) 100%), url("../assets/imgs/projects_banner_img.webp");
 	background-position: center top;
 	background-size: 100% auto;
 	background-repeat: no-repeat;
@@ -743,7 +743,7 @@ Contact section :
 	position: absolute;
 	inset: 0;
 	display: block;
-	background-image: url("../assets/imgs/contact_bg_img.png");
+	background-image: url("../assets/imgs/contact_bg_img.webp");
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: contain;
